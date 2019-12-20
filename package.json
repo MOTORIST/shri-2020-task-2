@@ -11,6 +11,9 @@
 		"npm": ">=6.9.0"
 	},
 	"scripts": {
+		"start": "webpack --mode development",
+		"build": "webpack --mode production",
+		"build:tsc": "tsc",
 		"commit": "git-cz",
 		"tslint": "tslint -c tslint.json 'src/**/*.ts'"
 	},
@@ -23,11 +26,7 @@
 		}
 	},
 	"lint-staged": {
-		"src/**/*.{ts,tsx}": [
-			"tslint -c tslint.json 'src/**/*.ts'",
-			"prettier --write",
-			"git add"
-		]
+		"src/**/*.{ts,tsx}": [ "tslint -c tslint.json 'src/**/*.ts'", "prettier --write", "git add" ]
 	},
 	"husky": {
 		"hooks": {
@@ -36,12 +35,16 @@
 		}
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^8.2.0",
 		"commitizen": "^4.0.3",
 		"cz-customizable": "^6.2.0",
 		"husky": "^3.1.0",
 		"lint-staged": "^9.5.0",
 		"prettier": "^1.19.1",
+		"ts-loader": "^6.2.1",
 		"tslint": "^5.20.1",
-		"typescript": "^3.7.3"
+		"typescript": "^3.7.3",
+		"webpack": "^4.41.4",
+		"webpack-cli": "^3.3.10"
 	}
 }
