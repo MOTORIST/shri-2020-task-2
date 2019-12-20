@@ -1,4 +1,4 @@
-import { linter } from '../src';
+import linter from '../src';
 
 describe('linter', () => {
   it('should return empty array, if not errors', () => {
