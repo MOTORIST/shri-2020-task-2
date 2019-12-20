@@ -1,9 +1,47 @@
 {
-  "name": "shri-2020-task02",
-  "version": "1.0.0",
-  "description": "Shri Moscow 2020 task 02",
-  "main": "index.js",
-  "author": "Gerasin Ivan <webartmotor@gmail.com>",
-  "license": "MIT",
-  "private": true
+	"name": "shri-2020-task02",
+	"version": "1.0.0",
+	"description": "Shri Moscow 2020 task 02",
+	"main": "index.js",
+	"author": "Gerasin Ivan <webartmotor@gmail.com>",
+	"license": "MIT",
+	"private": true,
+	"engines": {
+		"node": ">=12.4.0",
+		"npm": ">=6.9.0"
+	},
+	"scripts": {
+		"commit": "git-cz",
+		"tslint": "tslint -c tslint.json 'src/**/*.ts'"
+	},
+	"config": {
+		"commitizen": {
+			"path": "node_modules/cz-customizable"
+		},
+		"cz-customizable": {
+			"config": "./commitizen.js"
+		}
+	},
+	"lint-staged": {
+		"src/**/*.{ts,tsx}": [
+			"tslint -c tslint.json 'src/**/*.ts'",
+			"prettier --write",
+			"git add"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS -g './commitlint.js'",
+			"pre-commit": "lint-staged"
+		}
+	},
+	"devDependencies": {
+		"commitizen": "^4.0.3",
+		"cz-customizable": "^6.2.0",
+		"husky": "^3.1.0",
+		"lint-staged": "^9.5.0",
+		"prettier": "^1.19.1",
+		"tslint": "^5.20.1",
+		"typescript": "^3.7.3"
+	}
 }
