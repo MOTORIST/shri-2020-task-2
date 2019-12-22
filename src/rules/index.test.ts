@@ -1,6 +1,7 @@
-import { collectRulesData, mergeRulesData } from '.';
+import { collectRulesData, mergeRulesData, validation } from '.';
 import { getBlockNode } from '../../tests/fixtures/bemaot.fixtures';
-import { rules } from '../../tests/fixtures/rules.fixtures';
+import { fixtureRules } from '../../tests/fixtures/rules.fixtures';
+import { FIXTURE_ERROR } from '../../tests/fixtures/rule.fixtures';
 import { RulesDataBuffer } from '../types/RulesDataBuffer';
 
 describe('collectRulesData', () => {
@@ -15,7 +16,7 @@ describe('collectRulesData', () => {
       FIXTURE_ERROR_CODE: [{ fixtureData: true }],
     };
 
-    expect(collectRulesData(blockNode, rules)).toEqual(rulesDataBuffer);
+    expect(collectRulesData(blockNode, fixtureRules)).toEqual(rulesDataBuffer);
   });
 });
 
@@ -45,5 +46,17 @@ describe('mergeRulesData', () => {
     expect(
       mergeRulesData(rulesDataBuffer01, rulesDataBuffer02, rulesDataBuffer03),
     ).toEqual(rulesDataBuffer);
+  });
+});
+
+describe('validation', () => {
+  const rulesDataBuffer: RulesDataBuffer = {};
+
+  it('should return empty array, if not rules', () => {
+    expect(validation(rulesDataBuffer, [])).toEqual([]);
+  });
+
+  it('should return errors array, if rule return error', () => {
+    expect(validation(rulesDataBuffer, fixtureRules)).toEqual([FIXTURE_ERROR]);
   });
 });

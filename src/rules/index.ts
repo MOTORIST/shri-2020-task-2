@@ -2,6 +2,7 @@ import { ObjectNode } from 'json-to-ast';
 import { RulesDataBuffer } from '../types/RulesDataBuffer';
 import rulesArray from './rules';
 import { Rules } from '../types/Rules';
+import { LinterError } from '../types/LinterError';
 
 export function collectRulesData(
   node: ObjectNode,
@@ -24,6 +25,7 @@ export function mergeRulesData(
   ...arrRulesData: RulesDataBuffer[]
 ): RulesDataBuffer {
   const result: RulesDataBuffer = {};
+
   arrRulesData.forEach(data => {
     Object.keys(data).forEach((key: string) => {
       if (result[key]) {
@@ -35,4 +37,23 @@ export function mergeRulesData(
   });
 
   return result;
+}
+
+export function validation(
+  rulesDataBuffer: RulesDataBuffer,
+  rules: Rules[] = rulesArray,
+): LinterError[] {
+  const getErrors = (errorsAcc: LinterError[], { rule }: Rules) => {
+    const err = rule(rulesDataBuffer);
+
+    if (err) {
+      errorsAcc = errorsAcc.concat(err);
+    }
+
+    return errorsAcc;
+  };
+
+  const errors = rules.reduce(getErrors, []);
+
+  return errors;
 }
