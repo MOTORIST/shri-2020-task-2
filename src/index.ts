@@ -1,7 +1,7 @@
 import { LinterError } from './types/LinterError';
 import jsonToAst, { ValueNode } from 'json-to-ast';
 import { RulesDataBuffer } from './types/RulesDataBuffer';
-import { mergeRulesData, collectRulesData } from './rules';
+import { mergeRulesData, collectRulesData, validation } from './rules';
 import { getContent } from './helpers/bemaot';
 
 function traverse(node: ValueNode): RulesDataBuffer {
@@ -31,9 +31,9 @@ export default function linter(json: string) {
     throw new Error('json parameter is required');
   }
 
-  const errors: LinterError[] = [];
   const aot: ValueNode = jsonToAst(json);
   const rulesDataBuffer = traverse(aot);
+  const errors: LinterError[] = validation(rulesDataBuffer);
 
   return errors;
 }
