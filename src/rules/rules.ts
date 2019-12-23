@@ -9,6 +9,7 @@ const rules: Rules[] = [
   require('./text.several_h1'),
   require('./text.invalid_h2_position.rule'),
   require('./text.invalid_h3_position.rule'),
+  require('./grid.too_much_marketing_blocks.rule'),
 ];
 
 export default rules;
