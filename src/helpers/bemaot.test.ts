@@ -5,10 +5,17 @@ import {
   getLocation,
   getMods,
   getBlockName,
+  isElem,
+  getElemMods,
+  hasBlock,
 } from './bemaot';
 import {
   getBlockNode,
   getFixtureBlockNodeWithMods,
+  getFixtureElement,
+  getFixtureElementWithMods,
+  getFixtureBlockNodeWithBlock,
+  getFixtureBlockNodeWithBlocks,
 } from '../../tests/fixtures/bemaot.fixtures';
 import { FIXTURE_ERROR } from '../../tests/fixtures/rule.fixtures';
 import { LinterErrorLocation } from '../types/LinterError';
@@ -104,5 +111,61 @@ describe('getBlockName', () => {
     const blockNode = getBlockNode('fixtureBlock');
 
     expect(getBlockName(blockNode)).toBe('fixtureBlock');
+  });
+});
+
+describe('isElem', () => {
+  it('should return false, if node is not element', () => {
+    const blockNode = getBlockNode();
+    expect(isElem(blockNode)).toBeFalsy();
+  });
+
+  it('should return true, if node is element', () => {
+    const elemNode = getFixtureElement();
+    expect(isElem(elemNode)).toBeTruthy();
+  });
+
+  it('should return false, if element node has not name fixtureElem', () => {
+    const elemNode = getFixtureElement('fixtureElem');
+    expect(isElem(elemNode, 'failFixtureElem')).toBeFalsy();
+  });
+
+  it('should return false, if element node has  name fixtureElem', () => {
+    const elemNode = getFixtureElement('fixtureElem');
+    expect(isElem(elemNode, 'fixtureElem')).toBeTruthy();
+  });
+});
+
+describe('getElemMods', () => {
+  it('should return undefined, if elem has not mods', () => {
+    const elemNode = getFixtureElement('fixtureElem');
+    expect(getElemMods(elemNode)).toBeUndefined();
+  });
+
+  it('should return object mods', () => {
+    const elemNode = getFixtureElementWithMods();
+    expect(getElemMods(elemNode)).toEqual({ fixture: true });
+  });
+});
+
+describe('hasBlock', () => {
+  it('should return false, if block has not content', () => {
+    const blockNode = getBlockNode();
+    expect(hasBlock(blockNode, 'fixtureName')).toBeFalsy();
+  });
+
+  it('should return false, if block has not fixtureName block', () => {
+    const blockNode = getFixtureBlockNodeWithBlock('subBlock');
+    expect(hasBlock(blockNode, 'fixtureName')).toBeFalsy();
+  });
+
+  it('should return true, if block has fixtureName block', () => {
+    const blockNode = getFixtureBlockNodeWithBlock('fixtureName');
+    expect(hasBlock(blockNode, 'fixtureName')).toBeTruthy();
+  });
+
+  it('should return true, if block has fixtureName block among other blocks', () => {
+    const blockNode = getFixtureBlockNodeWithBlocks('fixtureName');
+    expect(hasBlock(blockNode, 'fixtureName')).toBeTruthy();
   });
 });

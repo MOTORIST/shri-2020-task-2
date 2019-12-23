@@ -4,6 +4,7 @@ import {
   ArrayNode,
   LiteralNode,
   Location,
+  ValueNode,
 } from 'json-to-ast';
 import { LinterErrorLocation } from '../types/LinterError';
 
@@ -96,4 +97,56 @@ export function getBlockName(node: ObjectNode): string | undefined {
   ) {
     return blockProperty.value.value as string;
   }
+}
+
+export function isElem(node: ObjectNode, name: string | null = null): boolean {
+  const elem = node.children.find((child: PropertyNode) => {
+    return name
+      ? child.key.value === 'elem' &&
+          (child.value as LiteralNode).value === name
+      : child.key.value === 'elem';
+  });
+
+  return !!elem;
+}
+
+export function getElemMods(node: ObjectNode): Mods | undefined {
+  const contentProperty = node.children.find((child: PropertyNode) => {
+    return child.key.value === 'elemMods';
+  });
+
+  if (!contentProperty) {
+    return;
+  }
+
+  const mods = (contentProperty?.value as ObjectNode).children.reduce(
+    (modsAcc: Mods, child: PropertyNode) => {
+      modsAcc[child.key.value] = (child.value as LiteralNode).value;
+
+      return modsAcc;
+    },
+    {},
+  );
+
+  return mods;
+}
+
+export function hasBlock(node: ObjectNode, name: string): boolean {
+  const nodeContent = getContent(node);
+
+  if (!nodeContent) {
+    return false;
+  }
+
+  if (nodeContent.type === 'Object') {
+    return isBlock(nodeContent, name);
+  }
+
+  if (nodeContent.type === 'Array') {
+    return nodeContent.children.some((child: ValueNode) =>
+      isBlock(child as ObjectNode, name),
+    );
+  }
+
+  return false;
 }
