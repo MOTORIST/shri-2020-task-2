@@ -4,6 +4,7 @@ import { Rules } from '../types/Rules';
 const rules: Rules[] = [
   require('./warning.text_sizes_should_be_equal.rule'),
   require('./warning.invalid_button_size.rule'),
+  require('./warning.invalid_button_position.rule'),
 ];
 
 export default rules;
