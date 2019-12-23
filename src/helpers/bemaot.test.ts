@@ -1,5 +1,11 @@
-import jsonToAst, { ObjectNode } from 'json-to-ast';
-import { isBlockOrElem, getContent } from './bemaot';
+import jsonToAst, { ObjectNode, Location } from 'json-to-ast';
+import { isBlockOrElem, getContent, getLocation, getMods } from './bemaot';
+import {
+  getBlockNode,
+  getFixtureBlockNodeWithMods,
+} from '../../tests/fixtures/bemaot.fixtures';
+import { FIXTURE_ERROR } from '../../tests/fixtures/rule.fixtures';
+import { LinterErrorLocation } from '../types/LinterError';
 
 describe('isBlockOrElem', () => {
   it('should return true, if node is block', () => {
@@ -51,5 +57,38 @@ describe('getContent', () => {
     const blockNode = jsonToAst(blockJson) as ObjectNode;
 
     expect(getContent(blockNode)?.type).toBe('Array');
+  });
+});
+
+describe('getLocation', () => {
+  const locationNode: Location = {
+    start: { line: 1, column: 1, offset: 0 },
+    end: { line: 1, column: 2, offset: 0 },
+    source: null,
+  };
+
+  const linterErrorLocation: LinterErrorLocation = {
+    start: {
+      column: 1,
+      line: 1,
+    },
+    end: {
+      column: 2,
+      line: 1,
+    },
+  };
+
+  it('should return LinterErrorLocation object', () => {
+    expect(getLocation(locationNode)).toEqual(linterErrorLocation);
+  });
+});
+
+describe('getMods', () => {
+  it('should return undefined, if block has not mods', () => {
+    expect(getMods(getBlockNode())).toBeUndefined();
+  });
+
+  it('should return mods object, if block has mods', () => {
+    expect(getMods(getFixtureBlockNodeWithMods())).toEqual({ fixture: true });
   });
 });
