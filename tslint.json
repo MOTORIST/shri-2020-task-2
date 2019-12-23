@@ -16,7 +16,13 @@
     },
     "object-literal-sort-keys": false,
     "arrow-parens": false,
-    "interface-name": false
+    "interface-name": false,
+    "no-shadowed-variable": [
+      true,
+      {
+        "function": false
+      }
+    ]
   },
   "rulesDirectory": []
 }
