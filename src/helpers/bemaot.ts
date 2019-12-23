@@ -83,3 +83,17 @@ export function getMods(node: ObjectNode): Mods | undefined {
 
   return mods;
 }
+
+export function getBlockName(node: ObjectNode): string | undefined {
+  const blockProperty = node.children.find((child: PropertyNode) => {
+    return child.key.value === 'block';
+  });
+
+  if (
+    blockProperty &&
+    blockProperty.value &&
+    blockProperty.value.type === 'Literal'
+  ) {
+    return blockProperty.value.value as string;
+  }
+}

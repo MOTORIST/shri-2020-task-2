@@ -1,5 +1,11 @@
 import jsonToAst, { ObjectNode, Location } from 'json-to-ast';
-import { isBlockOrElem, getContent, getLocation, getMods } from './bemaot';
+import {
+  isBlockOrElem,
+  getContent,
+  getLocation,
+  getMods,
+  getBlockName,
+} from './bemaot';
 import {
   getBlockNode,
   getFixtureBlockNodeWithMods,
@@ -90,5 +96,13 @@ describe('getMods', () => {
 
   it('should return mods object, if block has mods', () => {
     expect(getMods(getFixtureBlockNodeWithMods())).toEqual({ fixture: true });
+  });
+});
+
+describe('getBlockName', () => {
+  it('should return block name', () => {
+    const blockNode = getBlockNode('fixtureBlock');
+
+    expect(getBlockName(blockNode)).toBe('fixtureBlock');
   });
 });
