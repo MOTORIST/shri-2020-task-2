@@ -3,15 +3,17 @@ import { RulesDataBuffer } from '../types/RulesDataBuffer';
 import rulesArray from './rules';
 import { Rules } from '../types/Rules';
 import { LinterError } from '../types/LinterError';
+import { Path } from '../helpers/path';
 
 export function collectRulesData(
   node: ObjectNode,
+  path: Path = [],
   rules: Rules[] = rulesArray,
 ): RulesDataBuffer {
   const rulesDataBuffer: RulesDataBuffer = {};
 
   rules.forEach(({ getDataForRule, ERROR_CODE }: Rules) => {
-    const data = getDataForRule(node);
+    const data = getDataForRule(node, path);
 
     if (data) {
       rulesDataBuffer[ERROR_CODE] = [data];

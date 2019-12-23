@@ -8,7 +8,7 @@ describe('collectRulesData', () => {
   const blockNode = getBlockNode();
 
   it('should return empty object, if rules array empty', () => {
-    expect(collectRulesData(blockNode, [])).toEqual({});
+    expect(collectRulesData(blockNode, [], [])).toEqual({});
   });
 
   it('should return RulesDataBuffer object, if getDataForRule return data object', () => {
@@ -16,7 +16,9 @@ describe('collectRulesData', () => {
       FIXTURE_ERROR_CODE: [{ fixtureData: true }],
     };
 
-    expect(collectRulesData(blockNode, fixtureRules)).toEqual(rulesDataBuffer);
+    expect(collectRulesData(blockNode, [], fixtureRules)).toEqual(
+      rulesDataBuffer,
+    );
   });
 });
 
