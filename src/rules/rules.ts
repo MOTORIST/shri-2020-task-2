@@ -7,6 +7,7 @@ const rules: Rules[] = [
   require('./warning.invalid_button_position.rule'),
   require('./warning.invalid_placeholder_size.rule'),
   require('./text.several_h1'),
+  require('./text.invalid_h2_position.rule'),
 ];
 
 export default rules;
