@@ -62,4 +62,4 @@ export default function linter(json: string): LinterError[] {
 const _global =
   typeof window !== 'undefined' ? (window as any) : (global as any);
 
-_global.linter = linter;
+_global.lint = linter;
