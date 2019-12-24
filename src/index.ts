@@ -47,7 +47,7 @@ function traverse(
   return rulesDataBuffer;
 }
 
-export default function linter(json: string) {
+export default function linter(json: string): LinterError[] {
   if (!json) {
     throw new Error('json parameter is required');
   }
@@ -58,3 +58,8 @@ export default function linter(json: string) {
 
   return errors;
 }
+
+const _global =
+  typeof window !== 'undefined' ? (window as any) : (global as any);
+
+_global.linter = linter;
